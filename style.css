@@ -1,0 +1,154 @@
+* {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: rgb(255, 255, 255);
+  margin: 2rem 2rem;
+}
+
+.delete-registro {
+  position: absolute;
+  top: 1rem;
+  left: 40%;
+  text-align: center;
+  z-index: 100;
+  padding: .5rem;
+  background-color: brown;
+  color: white;
+  transition: all .5s ease;
+  visibility: visible;
+}
+
+.edit-registro {
+  position: absolute;
+  top: 1rem;
+  left: 40%;
+  text-align: center;
+  z-index: 100;
+  padding: .5rem;
+  background-color: rgba(18, 102, 18);
+  color: white;
+  transition: all .5s ease;
+  visibility: visible;
+}
+
+.notif-campo {
+  position: absolute;
+  top: 1rem;
+  left: 40%;
+  text-align: center;
+  z-index: 100;
+  padding: .5rem;
+  background-color: rgb(219, 189, 15);
+  color: rgb(0, 0, 0);
+  transition: all .5s ease;
+  visibility: visible;
+}
+
+.disabled {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.agregar-registro {
+  margin-right: 1rem;
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: beige;
+}
+
+.registros {
+  margin-top: 2rem;
+  background-color: rgb(255, 255, 255);
+}
+
+.registro {
+  background-color: beige;
+  width: 80%;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: auto;
+  margin-bottom: .5rem;
+}
+
+
+.btn-agregar {
+  background-color: black;
+  padding: .3rem;
+  color: white;
+  border-radius: .5rem;
+  transition: all .5s ease;
+}
+
+.btn-agregar:hover {
+  opacity: .5;
+}
+
+.btn-editar {
+  background-color: rgb(42, 53, 65);
+  padding: .3rem;
+  color: white;
+  border-radius: .5rem;
+  transition: all .5s ease;
+}
+
+.btn-borrar {
+  background-color: brown;
+  padding: .3rem;
+  color: white;
+  border-radius: .5rem;
+  transition: all .5s ease;
+  margin: .4rem;
+  margin-left: 0;
+}
+
+.btn-confirmar {
+  background-color: rgba(18, 102, 18, 0.911);
+  padding: .3rem;
+  color: white;
+  border-radius: .5rem;
+  transition: all .5s ease;
+  margin: .4rem;
+}
+
+.form-editar {
+  padding: 1rem;
+  background-color: beige;
+  width: 80%;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: auto;
+}
+
+.encabezado-listado {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  text-align: center;
+  background-color: beige;
+  padding: .5rem;
+  margin-bottom: .5rem;
+}
+
+.titulo-listado {
+  display: inline;
+}
+
+.cancelar-listado {
+  display: inline;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: brown;
+  padding: .3rem;
+  color: white;
+  transition: all .3s ease;
+  margin: .4rem;
+}
+
+.cancelar-listado:hover {
+  opacity: .5;
+}
