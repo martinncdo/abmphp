@@ -152,3 +152,8 @@
 .cancelar-listado:hover {
   opacity: .5;
 }
+
+.buscador {
+  margin: 2rem 2rem;
+  background-color: aliceblue;
+}

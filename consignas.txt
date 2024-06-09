@@ -1,0 +1,38 @@
+* Funcionalidad solicitada: 
+agregar, 
+listar/buscar, 
+modificar, 
+eliminar
+
+_____________________________________________________
+
+Tareas prioritarias:
+
+- Modificar función renderizarListado()
+líneas 22:36
+Editar función para renderizar el listado a partir
+de una consulta a la base de datos, que traiga 
+las filas de cada registro almacenado. REALIZADO
+
+- Modificar condicional if(isset($_POST["agregar"]))
+para que agregue un registro a la base de datos, de este
+modo la función renderizarListado() actualizará 
+automáticamente la interfaz los nuevos registros insertados. REALIZADO
+
+- Modificar condicional if(isset($_POST["borrar"]))
+implementar una función que a través de PDO elimine
+el registro con el DNI que se envío en la variable 
+$_POST["borrar"]. REALIZADO
+
+- Crear una función que traiga los datos de una persona
+según el DNI, para utilizarla en la condicional 
+if(isset($_POST["editar"])) y posteriormente utilizarla
+en la función de búsqueda.
+Nota: en la función de búsqueda se debe poder buscar por
+dni, y también por nombre o apellido (por separado o
+al mismo tiempo). REALIZADO PARCIALMENTE (falta implementar su uso para el buscador).
+
+- Crear una función en model.php para actualizar registros.
+Esta función se implementará en la condicional if(isset($_POST["actualizar"])).
+Ejemplo: se utilizará la query (UPDATE users SET dni = ?, nombre = ?, etc... WHERE dni = originaldni). REALIZADO.
+
