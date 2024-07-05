@@ -1,8 +1,4 @@
-let registroEliminado = document.querySelector(".delete-registro");
-let registroActualizado = document.querySelector(".edit-registro");
-let modifCampo = document.querySelector(".notif-campo");
-
-let alertas = [registroEliminado, registroActualizado, modifCampo];
+let alertas = document.querySelectorAll(".alert");
 
 alertas.forEach(alerta => {
   if (alerta !== null) {

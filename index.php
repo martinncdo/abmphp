@@ -24,8 +24,8 @@
       <br>Fecha de nacimiento: " . $persona["fecha_nac"] . "
       <br>Edad: " . calculoEdad($persona["fecha_nac"]) . " 
       <form action='index.php' method='POST'>
-      <button type='submit' class='btn-borrar' name='borrar' value=" . $persona['dni'] . ">Borrar</button>
-      <button type='submit' class='btn-editar' name='editar' value = " . $persona['dni'] . ">Editar</button>
+      <button type='submit' class='btn btn-danger mt-2' name='borrar' value=" . $persona['dni'] . ">Borrar</button>
+      <button type='submit' class='btn btn-primary mt-2' name='editar' value = " . $persona['dni'] . ">Editar</button>
       </form>
       <hr></div>";
     }
@@ -41,9 +41,10 @@
   function verifCamposVacios($campos) {
     $camposVacios = false;
     foreach($campos as $campo => $data) {
-      if (empty($data) or $data == "indef") {
-        echo "<div class='notif-campo'>Debes seleccionar: $campo.</div>";
+      if (empty($data) || $data == "indef") {
+        echo "<div class='notif-campo alert alert-warning'>Debes seleccionar: $campo.</div>";
         $camposVacios = true;
+        break;
       }
     }
     return $camposVacios;
@@ -52,12 +53,11 @@
 
   // Condicional para visualizar los registros de manera manual realizando click sobre el botón HTML.
   if (isset($_POST["visualizar"])) {
-    $registers = get_registers();
-    renderizarListado($registers);
+    header("Location: index.php");
   }
 
   if (isset($_GET["buscar"])) {
-    $registers = get_registers_by_filter($_GET["dni"], $_GET["nombre"], $_GET["apellido"]);
+    $registers = get_registers_by_filter($_GET["parametro"]);
     renderizarListado($registers);
   }
 
@@ -96,7 +96,7 @@
     // Caso contrario, prosigue con la operación para crear el nuevo registro.
     if ($camposVacios == false) {
       if (verificarDNI($_POST["dni"]) == true) {
-        echo "<div class='notif-campo'>El DNI " . $_POST["dni"] . " ya está en uso.</div>";
+        echo "<div class='notif-campo alert alert-warning'>El DNI " . $_POST["dni"] . " ya está en uso.</div>";
       } else {
         $register = array(
           'dni' => strval($_POST["dni"]),
@@ -111,29 +111,30 @@
     }
   };
 
-
   if (isset($_POST["borrar"])) {
     delete_register($_POST["borrar"]);
-    echo "<div class='delete-registro'>Registro con DNI " . $_POST["borrar"] . " eliminado.</div>";
+    echo "<div class='delete-registro alert alert-danger'>Registro con DNI " . $_POST["borrar"] . " eliminado.</div>";
   }
 
   if (isset($_POST["editar"])) {
     $register = get_register_by_dni($_POST["editar"]);
-    $formularioEdit = "<br><br><form class='form-editar' action='index.php' method='POST'>
-      <input type='hidden' name='originaldni' value=" . $_POST["editar"] . " >
-      <input type='number' name='dni' value=" . $register["dni"]. " > 
-      <input type='text' name='nombre' value=" . $register["nombre"] . " > 
-      <input type='text' name='apellido' value=" . $register["apellido"] . " > 
-      <select name='sexo' id='sexo'>
+    $formularioEdit = "<div class='layer-edit'>
+    <form class='form-editar' action='index.php' method='POST'>
+      <input type='hidden' class='form-control' name='originaldni' value=" . $_POST["editar"] . " >
+      <input type='number' class='form-control' name='dni' value=" . $register["dni"]. " > 
+      <input type='text' class='form-control' name='nombre' value=" . $register["nombre"] . " > 
+      <input type='text' class='form-control' name='apellido' value=" . $register["apellido"] . " > 
+      <select class='form-select' name='sexo' id='sexo'>
           <option disabled selected>Seleccionar opción</option>
           <option value='masculino'" . ($register["sexo"] == "masculino" ? "selected" : ""). ">Masculino</option>
           <option value='femenino'" . ($register["sexo"] == "femenino" ? "selected" : "") . ">Femenino</option>
         </select>
-      <input type='date' name='fechanac' value=" . $register["fecha_nac"] . " > 
-      <input type='text' name='edad' readonly value=" . calculoEdad($register["fecha_nac"]) . " >
-      <button type='submit' class='btn-confirmar' name='actualizar'>Actualizar</button>
-      <button type='submit' class='btn-borrar' name='retroceder'>Cancelar</button>
-    </form>";
+      <input type='date' class='form-control' name='fechanac' value=" . $register["fecha_nac"] . " > 
+      <input type='text' class='form-control' name='edad' readonly value=" . calculoEdad($register["fecha_nac"]) . " >
+      <button type='submit' class='btn btn-success' name='actualizar'>Actualizar</button>
+      <button type='submit' class='btn btn-danger' name='retroceder'>Cancelar</button>
+    </form>
+    </div>";
   }
 
   if (isset($_POST["actualizar"])) {
@@ -156,7 +157,7 @@
 
     if ($camposVacios == false) {
       update_register($register);
-      echo "<div class='edit-registro'>Registro actualizado correctamente.</div>";
+      echo "<div class='edit-registro alert alert-success'>Registro actualizado correctamente.</div>";
     }
   }
 
@@ -171,62 +172,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
-  <div class="buscador">
-    <form action="<?php $_SERVER["PHP_SELF"]?>" method="GET">
-      <input type="text" name="dni" placeholder="Buscar por DNI">
-      <input type="text" name="nombre" placeholder="Buscar por nombre">
-      <input type="text" name="apellido" placeholder="Buscar por apellido">
-      <input type="submit" name="buscar" value="Buscar">
-    </form>
-  </div>
-  <div class="main">
-    <div class="seccion-form">
-      <form class="agregar-registro" action="<?php $_SERVER["PHP_SELF"]?>" method="POST">
-        <label for="dni">DNI</label>
-        <input type="number" name="dni" id="dni">
-        <br><br>
-        <label for="nombre">Nombre</label>
-        <input type="text" name="nombre" id="nombre">
-        <br><br>
-        <label for="apellido">Apellido</label>
-        <input type="text" name="apellido" id="apellido">
-        <br><br>
-        <label for="sexo">Sexo</label>
-        <select name="sexo" id="sexo">
-          <option disabled selected>Seleccionar opción</option>
-          <option value="masculino">Masculino</option>
-          <option value="femenino">Femenino</option>
-        </select>
-        <br><br>
-        <label for="fechanac">Fecha de nacimiento</label>
-        <input type="date" name="fechanac" id="fechanac">
-        <br><br>
-        <button type="submit" name="agregar" class="btn-agregar">Enviar</button>
-        <button type="submit" name="visualizar" class="btn-agregar">Visualizar registros</button>
+  <?php
+      if (!empty($formularioEdit)) {
+        echo $formularioEdit;
+      }
+    ?>
+  <nav class="navbar nav-page bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand">ABM - Cristaldo Martín</a>
+      <form action="<?php $_SERVER["PHP_SELF"]?>" method="GET" class="d-flex" role="search">
+        <input class="form-control buscador me-2" type="search"  name="parametro" placeholder="Buscar por DNI, apellido o nombre" aria-label="Search">
+        <button class="btn btn-outline-success" name="buscar" type="submit">Buscar</button>
       </form>
-      </div>
+    </div>
+  </nav>
+  <div class="main">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+            <form class="agregar-registro p-3" action="<?php $_SERVER["PHP_SELF"]?>" method="POST">
+              <label for="dni">DNI</label>
+              <input class="form-control" type="number" name="dni" id="dni">
+              <br><br>
+              <label for="nombre">Nombre</label>
+              <input class="form-control" type="text" name="nombre" id="nombre">
+              <br><br>
+              <label for="apellido">Apellido</label>
+              <input class="form-control" type="text" name="apellido" id="apellido">
+              <br><br>
+              <label for="sexo">Sexo</label>
+              <select class="form-select" name="sexo" id="sexo">
+                <option disabled selected>Seleccionar opción</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+              </select>
+              <br><br>
+              <label for="fechanac">Fecha de nacimiento</label>
+              <input class="form-control" type="date" name="fechanac" id="fechanac">
+              <br><br>
+              <button type="submit" name="agregar" class="btn btn-secondary">Enviar</button>
+              <button type="submit" name="visualizar" class="btn btn-primary">Visualizar registros</button>
+            </form>
+        </div>
 
-      <div class="registros">
-        <div class="encabezado-listado"><p class="titulo-listado">Listado de personas</p></div>
-        <?php
-            if (!isset($_GET["buscar"])) {
-              $registers = get_registers();
-              renderizarListado($registers);
-            }
+        <div class="col">
+            <div class="encabezado-listado p-3"><p class="text-center">Listado de personas</p></div>
+            <?php
+                if (!isset($_GET["buscar"])) {
+                  $registers = get_registers();
+                  renderizarListado($registers);
+                }
 
-            foreach($HTMLPersonas as $person_HTML) {
-              echo $person_HTML;
-            }
+                foreach($HTMLPersonas as $person_HTML) {
+                  echo $person_HTML;
+                }
 
-            if (isset($formularioEdit)) {
-              echo $formularioEdit;
-            }
-        ?>
+                ?>
+        </div>
       </div>
     </div>
-    <script src="script.js"></script>
+    </div>
+
 </body>
 </html>

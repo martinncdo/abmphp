@@ -120,49 +120,20 @@ function update_register($data) {
   }
 }
 
-function get_registers_by_filter($dni, $nombre, $apellido) {
+function get_registers_by_filter($parametro) {
   try {
-    $registers = array();
-    $dniquery = '%' . $dni . '%';
-    $nombrequery = '%' . $nombre . '%';
-    $apellidoquery = '%' . $apellido . '%';
+    $parametroQuery = '%' . $parametro . '%';
     $dbh = open_database_connection();
 
-    if (!empty($dni)) {
-      $stmt = $dbh->prepare("SELECT * FROM users WHERE dni like ?");
-      $stmt->bindParam(1, $dniquery);
-      $stmt->execute();
-      $registerswithDNI = $stmt->fetchAll();
-      foreach($registerswithDNI as $register) {
-        $registers[] = $register;
-      }
-      $stmt = null;
-    }
-
-    if (!empty($nombre)) {
-      $stmt = $dbh->prepare("SELECT * FROM users WHERE nombre like ?");
-      $stmt->bindParam(1, $nombrequery);
-      $stmt->execute();
-      $registerswithname = $stmt->fetchAll();
-      foreach($registerswithname as $register) {
-        $registers[] = $register;
-      }
-      $stmt = null;
-    }
-
-    if (!empty($apellido)) {
-      $stmt = $dbh->prepare("SELECT * FROM users WHERE apellido like ?");
-      $stmt->bindParam(1, $apellidoquery);
-      $stmt->execute();
-      $registerswithlastname = $stmt->fetchAll();
-      foreach($registerswithlastname as $register) {
-        $registers[] = $register;
-      }
-      $stmt = null;
-    }
+    
+    $stmt = $dbh->prepare("SELECT * FROM users WHERE dni like ? or nombre like ? or apellido like ?");
+    $stmt->bindParam(1, $parametroQuery);
+    $stmt->bindParam(2, $parametroQuery);
+    $stmt->bindParam(3, $parametroQuery);
+    $stmt->execute();
+    $registers = $stmt->fetchAll();
 
     close_database_connection($dbh);
-    $registers = array_unique($registers, SORT_REGULAR);
     return $registers;
   } catch (Exception $e) {
     print "¡Error!: " . $e->getMessage() . "<br/>";
